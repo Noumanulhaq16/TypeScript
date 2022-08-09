@@ -1,5 +1,6 @@
 // 
 import { Invoice } from "./classes/Invoice.js";
+import { ListItem } from "./classes/ListItem.js";
 import { Payment } from "./classes/Payment.js";
 // let docOne: HasFormater;
 // let docTwo: HasFormater;
@@ -17,11 +18,13 @@ import { Payment } from "./classes/Payment.js";
 //     console.log(inv.detail, inv.amount, inv.format())
 // })
 const form = document.querySelector('.new-item-form');
-console.log(form.children);
+// console.log(form.children)
 const type = document.querySelector('#type');
 const tofrom = document.querySelector('#tofrom');
 const details = document.querySelector('#details');
 const amount = document.querySelector('#amount');
+const ul = document.querySelector('ul');
+const list = new ListItem(ul);
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     let doc;
@@ -37,4 +40,16 @@ form.addEventListener('submit', (e) => {
     //     details.value,
     //     amount.value
     // )
+    list.render(doc, type.value, 'end');
 });
+const AddUID = (obj) => {
+    let uid = Math.floor(Math.random() * 100);
+    return Object.assign(Object.assign({}, obj), { uid });
+};
+let docOnes = AddUID({ name: 'Yoshi', age: 40 });
+console.log(docOnes);
+const docThree = {
+    uid: 1,
+    resourceName: 'person',
+    data: { name: 'shaun' }
+};

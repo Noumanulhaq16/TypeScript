@@ -1,5 +1,6 @@
 // 
 import { Invoice } from "./classes/Invoice.js";
+import { ListItem } from "./classes/ListItem.js";
 import { Payment } from "./classes/Payment.js";
 import { HasFormater } from "./interfaces/hasFormater.js";
 
@@ -29,20 +30,25 @@ import { HasFormater } from "./interfaces/hasFormater.js";
 
 
 const form = document.querySelector('.new-item-form') as HTMLFormElement;
-console.log(form.children)
+// console.log(form.children)
 
 const type = document.querySelector('#type') as HTMLSelectElement
 const tofrom = document.querySelector('#tofrom') as HTMLInputElement
 const details = document.querySelector('#details') as HTMLInputElement
 const amount = document.querySelector('#amount') as HTMLInputElement
 
+const ul = document.querySelector('ul')!;
+
+const list = new ListItem(ul)
+
 form.addEventListener('submit', (e: Event) => {
     e.preventDefault();
-    let doc : HasFormater;
-    if(type.value === 'invoice'){
-        doc = new Invoice(tofrom.value,details.value,amount.valueAsNumber)
-    }else{
-        doc = new Payment(tofrom.value,details.value,amount.valueAsNumber)
+    let doc: HasFormater;
+    let value:[string,string,number] = [tofrom.value, details.value, amount.valueAsNumber]
+    if (type.value === 'invoice') {
+        doc = new Invoice(...value)
+    } else {
+        doc = new Payment(...value)
     }
     // console.log(
     //     type.value,
@@ -50,4 +56,43 @@ form.addEventListener('submit', (e: Event) => {
     //     details.value,
     //     amount.value
     // )
+    list.render(doc, type.value, 'end')
 })
+
+const AddUID = <T extends { name: string }>(obj: T) => {
+    let uid = Math.floor(Math.random() * 100);
+    return { ...obj, uid }
+}
+let docOnes = AddUID({ name: 'Yoshi', age: 40 });
+console.log(docOnes)
+//Tuples    
+let arr = ['ryu', 25, true]
+
+
+let tup: [string, number, boolean] = ['ruy', 23, true]
+
+
+
+
+// Enums
+enum ResourceType { Book, Authur, Film }
+
+
+interface Resource<T> {
+    uid: number;
+    resourceType: number;
+    data: T;
+}
+
+const docThree: Resource<object> = {
+    uid: 1,
+    resourceType: ResourceType.Authur,
+    data: { name: 'shaun' }
+}
+
+const docFour: Resource<object> = {
+    uid: 2,
+    resourceType: ResourceType.Book,
+    data: ['bread']
+}
+
